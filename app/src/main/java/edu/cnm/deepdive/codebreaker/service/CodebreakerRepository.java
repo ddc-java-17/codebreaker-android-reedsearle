@@ -22,7 +22,7 @@ public class CodebreakerRepository {
   public Single<Game> startGame(Game game) {
     return proxy
         .startGame(game)
-        .doOnSuccess((g) -> this.game = g)
+        .doOnSuccess(this::setGame)
         .subscribeOn(scheduler);
   }
 
@@ -36,10 +36,15 @@ public class CodebreakerRepository {
   public Single<Game> getGame(String id) {
     return proxy
         .getGame(id)
+        .doOnSuccess(this::setGame)
         .subscribeOn(scheduler);
   }
 
   public Game getGame() {
     return game;
+  }
+
+  private void setGame(Game game) {
+    this.game = game;
   }
 }

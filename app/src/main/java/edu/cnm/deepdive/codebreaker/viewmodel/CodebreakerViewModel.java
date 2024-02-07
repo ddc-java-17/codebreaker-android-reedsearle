@@ -42,11 +42,35 @@ public class CodebreakerViewModel extends ViewModel implements DefaultLifecycleO
   }
 
   public void startGame(){
+    throwable.setValue(null);
     Game game = new Game("ABCDEF", 4);// FIXME: 2/7/2024 User preferenced (settings for code pool and length.
     repository
         .startGame(game)
         .subscribe(
             this.game::postValue,
+            this::postThrowable,
+            pending
+        );
+  }
+
+  public LiveData<Game> resumeGame(String id) {
+    throwable.setValue(null);
+    repository
+        .getGame(id)
+        .subscribe(
+            this.game::postValue,
+            this::postThrowable,
+            pending
+        );
+    return game;
+  }
+
+  public void submitGuess(String text){
+    throwable.setValue(null);
+    repository
+        .submitGuess(text)
+        .subscribe(
+            this.guess::postValue,
             this::postThrowable,
             pending
         );

@@ -1,5 +1,5 @@
 ### IntelliJ/Android Studio ###
-
+*.bkp
 # - metadata
 /.idea/
 *.iml

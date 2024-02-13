@@ -9,9 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
+import dagger.hilt.android.AndroidEntryPoint;
+import edu.cnm.deepdive.codebreaker.adapter.GuessesAdapter;
 import edu.cnm.deepdive.codebreaker.databinding.FragmentGameBinding;
 import edu.cnm.deepdive.codebreaker.viewmodel.CodebreakerViewModel;
 
+@AndroidEntryPoint
 public class GameFragment extends Fragment {
 
   private FragmentGameBinding binding;
@@ -27,6 +30,8 @@ public class GameFragment extends Fragment {
      @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // load and bind layout
     binding = FragmentGameBinding.inflate(inflater, container, false);
+    binding.submit.setOnClickListener(
+        (v)->viewModel.submitGuess(binding.guess.getText().toString().strip()));
     // TODO: 2/7/2024 Initialize any view widgets as necessary
     return binding.getRoot();
   }
@@ -40,10 +45,14 @@ public class GameFragment extends Fragment {
     LifecycleOwner owner = getViewLifecycleOwner();
     viewModel
         .getGame()
-        .observe(owner, (game)->{ /* TODO Update UI for change of game */});
+        .observe(owner, (game)->{
+          GuessesAdapter adapter = new GuessesAdapter(requireContext(), game.getGuesses());
+          binding.guesses.setAdapter(adapter);
+        });
     viewModel
         .getGuess()
-        .observe(owner, (guess)-> {/* TODO Update UI for List of guesses displayed for new guess  */ });
+        .observe(owner, (guess)-> ((GuessesAdapter)binding.guesses.getAdapter()).notifyDataSetChanged());
+    // TODO: 2/13/2024 scroll to make last guess visible
     viewModel
         .getInProgress()
         .observe(owner, (inProgress)->{/*TODO Enable/display controls on change of game state   */});

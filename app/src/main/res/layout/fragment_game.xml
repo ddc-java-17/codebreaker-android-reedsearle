@@ -22,6 +22,7 @@
       android:layout_weight="6"
       android:padding="@dimen/half_dynamic_spacing"
       android:text="@string/guess_header"
+      style="@style/AppTheme.GuessText.Title"
       />
 
     <TextView
@@ -31,6 +32,8 @@
       android:layout_weight="3"
       android:padding="@dimen/half_dynamic_spacing"
       android:text="@string/correct_header"
+      android:textAlignment="center"
+      style="@style/AppTheme.GuessText.Centered.Title"
       />
 
     <TextView
@@ -40,6 +43,8 @@
       android:layout_weight="3"
       android:padding="@dimen/half_dynamic_spacing"
       android:text="@string/close_header"
+      android:textAlignment="center"
+      style="@style/AppTheme.GuessText.Centered.Title"
       />
   </LinearLayout>
 
@@ -49,7 +54,33 @@
     android:layout_height="0dp"
     android:orientation="vertical"
     app:layout_constraintTop_toBottomOf="@id/column_headers"
+    app:layout_constraintBottom_toTopOf="@id/guess"
+    tools:listitem="@layout/item_guesses"
+    />
+
+  <EditText
+    android:id="@+id/guess"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/half_dynamic_spacing"
+    android:inputType="text"
+    android:hint="@string/guess_hint"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toStartOf="@+id/submit"
     app:layout_constraintBottom_toBottomOf="parent"
+    tools:ignore="Autofill"/>
+
+  <ImageButton
+    android:id="@+id/submit"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:src="@drawable/send"
+    android:background="?selectableItemBackgroundBorderless"
+    android:layout_margin="@dimen/half_dynamic_spacing"
+    android:contentDescription="@string/submit_description"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="@id/guess"
+    app:layout_constraintTop_toTopOf="@id/guess"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

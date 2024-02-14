@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.codebreaker.adapter.GuessesAdapter;
+import edu.cnm.deepdive.codebreaker.adapter.SwatchesAdapter;
 import edu.cnm.deepdive.codebreaker.databinding.FragmentGameBinding;
 import edu.cnm.deepdive.codebreaker.viewmodel.CodebreakerViewModel;
 
@@ -32,6 +33,7 @@ public class GameFragment extends Fragment {
     binding = FragmentGameBinding.inflate(inflater, container, false);
     binding.submit.setOnClickListener(
         (v)->viewModel.submitGuess(binding.guess.getText().toString().strip()));
+    binding.colorSelector.setAdapter(new SwatchesAdapter(requireContext()));
     // TODO: 2/7/2024 Initialize any view widgets as necessary
     return binding.getRoot();
   }

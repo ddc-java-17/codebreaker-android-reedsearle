@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <SeekBarPreference
+    android:key="@string/code_length_key"
+    android:title="@string/code_length_title"
+    android:summary="@string/code_length_summary"
+    app:min="2"
+    android:max="6"
+    android:defaultValue="4"
+    app:showSeekBarValue="true"
+    android:icon="@drawable/code_length"
+    />
+</PreferenceScreen>

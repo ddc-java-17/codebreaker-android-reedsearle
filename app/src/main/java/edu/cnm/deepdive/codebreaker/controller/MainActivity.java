@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.codebreaker.R;
@@ -46,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
     boolean handled = true;
     if (item.getItemId() == R.id.sign_out) {
       loginViewModel.signOut();
+    } else if (item.getItemId() == R.id.settings) {
+      // TODO: 2/14/2024 navigate to settings
+      //noinspection DataFlowIssue
+      NavController controller =
+          ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))
+              .getNavController();
+      controller.navigate(GameFragmentDirections.navigateToSettings());
     } else {
       handled = super.onOptionsItemSelected(item);
     }

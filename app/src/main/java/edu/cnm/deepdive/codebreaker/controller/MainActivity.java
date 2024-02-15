@@ -50,11 +50,8 @@ public class MainActivity extends AppCompatActivity {
       loginViewModel.signOut();
     } else if (item.getItemId() == R.id.settings) {
       // TODO: 2/14/2024 navigate to settings
-      //noinspection DataFlowIssue
-      NavController controller =
-          ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))
-              .getNavController();
-      controller.navigate(GameFragmentDirections.navigateToSettings());
+      Intent intent = new Intent(this, SettingsActivity.class);
+      startActivity(intent);
     } else {
       handled = super.onOptionsItemSelected(item);
     }

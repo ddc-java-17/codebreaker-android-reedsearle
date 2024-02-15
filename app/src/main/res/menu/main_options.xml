@@ -7,6 +7,7 @@
     android:title="@string/settings"
     app:showAsAction="ifRoom"
     android:icon="@drawable/settings"
+    android:orderInCategory="1000"
     />
 
 
@@ -14,7 +15,8 @@
     android:id="@+id/sign_out"
     android:title="@string/sign_out"
     android:icon="@drawable/logout"
-    app:showAsAction="ifRoom"
+    app:showAsAction="never"
+    android:orderInCategory="1100"
     />
 
 </menu>

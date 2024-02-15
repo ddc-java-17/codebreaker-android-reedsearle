@@ -11,16 +11,7 @@
     android:name="edu.cnm.deepdive.codebreaker.controller.GameFragment"
     tools:layout="@layout/fragment_game">
 
-    <action
-      android:id="@+id/navigate_to_settings"
-      app:destination="@id/settings_fragment"
-      />
   </fragment>
 
-  <fragment
-    android:id="@+id/settings_fragment"
-    android:name="edu.cnm.deepdive.codebreaker.controller.SettingsFragment">
-
-  </fragment>
 
 </navigation>

@@ -1,29 +1,36 @@
 package edu.cnm.deepdive.codebreaker.model.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import java.time.Duration;
 import java.time.Instant;
 
-@Entity(tableName = "game_result")
+@Entity(
+    tableName = "game_result",
+    indices = @Index(value = {"guess_count", "duration"})
+)
 public class GameResult {
 
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "game_result_id")
   private long id;
 
-  @ColumnInfo(name = "timestamp")
-  private Instant timestamp;
+  @ColumnInfo(index = true)
+  @NonNull
+  private Instant timestamp = Instant.now();
 
-  @ColumnInfo(name = "code_length")
+  @ColumnInfo(name = "code_length", index = true)
   private int codeLength;
 
-  @ColumnInfo(name = "guess_count")
+  @ColumnInfo(name = "guess_count", index = true)
   private int guessCount;
 
-  @ColumnInfo(name = "duration")
-  private Duration duration;
+  @ColumnInfo(index = true)
+  @NonNull
+  private Duration duration = Duration.ZERO;
 
   public long getId() {
     return id;
@@ -33,11 +40,12 @@ public class GameResult {
     this.id = id;
   }
 
+  @NonNull
   public Instant getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(Instant timestamp) {
+  public void setTimestamp(@NonNull Instant timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -57,11 +65,12 @@ public class GameResult {
     this.guessCount = guessCount;
   }
 
+  @NonNull
   public Duration getDuration() {
     return duration;
   }
 
-  public void setDuration(Duration duration) {
+  public void setDuration(@NonNull Duration duration) {
     this.duration = duration;
   }
 }

@@ -21,7 +21,7 @@ public class User {
   @ColumnInfo(name = "oauth_key")
   private String oauthKey;
 
-  @ColumnInfo(name = "display_name")
+  @ColumnInfo(name = "display_name", collate = ColumnInfo.NOCASE)
   private String displayName;
 
   public long getId() {

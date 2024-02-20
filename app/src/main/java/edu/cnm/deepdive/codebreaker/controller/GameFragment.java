@@ -81,7 +81,6 @@ public class GameFragment extends Fragment implements MenuProvider {
     connectToViewModel();
     LifecycleOwner owner = getViewLifecycleOwner();
     observeGame(owner);
-    observeGuess(owner);
     observeInProgress(owner);
   }
 
@@ -94,28 +93,27 @@ public class GameFragment extends Fragment implements MenuProvider {
     viewModel
         .getGame()
         .observe(owner, (game)->{
-          adapter = new GuessesAdapter(requireContext(), game.getGuesses());
-          binding.guesses.setAdapter(adapter);
+          List<Guess> guesses = game.getGuesses();
+          if (adapter == null) {
+            adapter = new GuessesAdapter(requireContext(), guesses);
+            binding.guesses.setAdapter(adapter);
+          }
+          adapter.notifyDataSetChanged();
+          binding.guesses.post(()->binding.guesses.smoothScrollToPosition(guesses.size()-1));
           createSpinners(game);
         });
-  }
-
-  private void observeGuess(LifecycleOwner owner) {
-    viewModel
-        .getGuess()
-        .observe(owner, (guess)-> {
-          if (adapter!=null) {
-            adapter.notifyDataSetChanged();
-            binding.guesses.setSelection(adapter.getCount()-1);
-          }
-        });
-    // TODO: 2/13/2024 scroll to make last guess visible
   }
 
   private void observeInProgress(LifecycleOwner owner) {
     viewModel
         .getInProgress()
-        .observe(owner, (inProgress)->{/*TODO Enable/display controls on change of game state   */});
+        .observe(owner, (inProgress)->{
+          int visibility = inProgress
+              ? View.VISIBLE
+              : View.INVISIBLE;
+          binding.colorSelectors.setVisibility(visibility);
+          binding.submit.setVisibility(visibility);
+        });
   }
 
   private void createSpinners(Game game) {
@@ -124,6 +122,7 @@ public class GameFragment extends Fragment implements MenuProvider {
     String lastGuess = (guesses.isEmpty())
         ? null
         : guesses.get(guesses.size()-1).getContent();
+    // TODO: 2/20/2024 Use lastGuess to reset spinners to colors of lastGuess(e.g., after rotation) 
     binding.colorSelectors.removeAllViews();
     Context context = requireContext();
     for (int i = 0; i < codeLength; i++) {

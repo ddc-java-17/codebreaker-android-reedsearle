@@ -70,6 +70,7 @@ public class GameFragment extends Fragment implements MenuProvider {
   public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
     boolean handled = true;
     if (menuItem.getItemId()==R.id.new_game){
+      adapter = null;
       viewModel.startGame();
     } else {
       handled = false;
@@ -97,10 +98,10 @@ public class GameFragment extends Fragment implements MenuProvider {
           if (adapter == null) {
             adapter = new GuessesAdapter(requireContext(), guesses);
             binding.guesses.setAdapter(adapter);
+            createSpinners(game);
           }
           adapter.notifyDataSetChanged();
           binding.guesses.post(()->binding.guesses.smoothScrollToPosition(guesses.size()-1));
-          createSpinners(game);
         });
   }
 
@@ -122,7 +123,7 @@ public class GameFragment extends Fragment implements MenuProvider {
     String lastGuess = (guesses.isEmpty())
         ? null
         : guesses.get(guesses.size()-1).getContent();
-    // TODO: 2/20/2024 Use lastGuess to reset spinners to colors of lastGuess(e.g., after rotation) 
+    // TODO: 2/20/2024 Use lastGuess to reset spinners to colors of lastGuess(e.g., after rotation)
     binding.colorSelectors.removeAllViews();
     Context context = requireContext();
     for (int i = 0; i < codeLength; i++) {

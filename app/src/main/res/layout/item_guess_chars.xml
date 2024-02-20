@@ -7,7 +7,7 @@
   android:src="@drawable/color_swatch_shape"
   android:scaleType="fitCenter"
   android:adjustViewBounds="true"
-  android:layout_margin="@dimen/half_static_spacing"
+  android:layout_marginStart="@dimen/half_static_spacing"
   tools:viewBindingIgnore="true"
   tools:ignore="ContentDescription"
   />

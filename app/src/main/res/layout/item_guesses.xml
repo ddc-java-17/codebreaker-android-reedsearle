@@ -3,19 +3,17 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:orientation="horizontal"
+  android:layout_gravity="start|center_vertical"
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-<!--TODO Replace Textview below with Linear Layout for holding imageViews-->
-
-  <TextView
+  <LinearLayout
     android:id="@+id/guess"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:layout_weight="6"
-    android:padding="@dimen/half_dynamic_spacing"
-    tools:text="ABBC"
-    style="@style/AppTheme.GuessText"
+    android:padding="@dimen/half_static_spacing"
     />
 
   <TextView

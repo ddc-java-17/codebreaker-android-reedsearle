@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/column_headers"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="@dimen/half_dynamic_spacing"
+  android:layout_marginTop="@dimen/half_dynamic_spacing"
+  android:orientation="horizontal"
+  >
+
+  <TextView
+    android:id="@+id/guess_count"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="3"
+    android:layout_margin="@dimen/half_static_spacing"
+    tools:text="12"
+    />
+
+  <TextView
+    android:id="@+id/duration"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="3"
+    android:layout_margin="@dimen/half_static_spacing"
+    tools:text="1:23"
+    />
+
+  <TextView
+    android:id="@+id/timestamp"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="3"
+    android:layout_margin="@dimen/half_static_spacing"
+    tools:text="01/23/4567"
+    />
+
+</LinearLayout>

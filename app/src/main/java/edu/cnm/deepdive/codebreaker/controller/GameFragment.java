@@ -143,4 +143,10 @@ public class GameFragment extends Fragment implements MenuProvider {
         .collect(Collectors.joining());
     viewModel.submitGuess(guess);
   }
+
+  @Override
+  public void onDestroyView() {
+    binding = null;
+    super.onDestroyView();
+  }
 }

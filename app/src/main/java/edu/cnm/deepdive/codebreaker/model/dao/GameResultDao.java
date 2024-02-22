@@ -8,7 +8,6 @@ import edu.cnm.deepdive.codebreaker.model.entity.GameResult;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 import java.util.List;
-import retrofit2.http.DELETE;
 
 @Dao
 public interface GameResultDao {
@@ -30,7 +29,7 @@ public interface GameResultDao {
 
   default Single<GameResult> insertAndUpdate(GameResult gameResult) {
     return insert(gameResult)
-        .map((id)-> {
+        .map((id) -> {
           gameResult.setId(id);
           return gameResult;
         });

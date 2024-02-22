@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity {
     boolean handled = true;
     if (item.getItemId() == R.id.sign_out) {
       loginViewModel.signOut();
-    } else if (item.getItemId() == R.id.settings) {
-      // TODO: 2/14/2024 navigate to settings
-      Intent intent = new Intent(this, SettingsActivity.class);
-      startActivity(intent);
     } else {
       handled = super.onOptionsItemSelected(item);
     }

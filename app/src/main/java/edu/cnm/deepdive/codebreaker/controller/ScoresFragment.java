@@ -30,6 +30,7 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
     // Inflate the layout for this fragment
     binding = FragmentScoresBinding.inflate(inflater, container, false);
     binding.codeLength.setOnSeekBarChangeListener(this);
+    binding.clearScores.setOnClickListener((v)->viewModel.clearResults());
     return binding.getRoot();
   }
 

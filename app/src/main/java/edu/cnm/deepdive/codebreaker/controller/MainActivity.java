@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.codebreaker.R;
@@ -34,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
         .getThrowable()
             .observe(this, this::handleThrowable);
     setContentView(binding.getRoot());
+    setupActionBar();
+  }
+
+  @Override
+  public boolean onSupportNavigateUp() {
+    getOnBackPressedDispatcher().onBackPressed();
+    return true;
   }
 
   @Override
@@ -63,5 +72,18 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void handleThrowable(Throwable throwable) {
+  }
+
+  private void setupActionBar () {
+    AppBarConfiguration config = new AppBarConfiguration.Builder(
+        R.id.game_fragment,
+        R.id.scores_fragment,
+        R.id.settings_fragment)
+        .build();
+    //noinspection DataFlowIssue
+    NavController controller =
+        ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))
+            .getNavController();
+    NavigationUI.setupActionBarWithNavController(this, controller, config);
   }
 }

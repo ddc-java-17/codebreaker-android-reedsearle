@@ -5,6 +5,8 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,7 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
           GameResultsAdapter adapter = new GameResultsAdapter(requireContext(), gameResults);
           binding.gameResults.setAdapter(adapter);
         });
-
+    setupActionBar();
   }
 
   @Override
@@ -50,6 +52,8 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
     binding = null;
     super.onDestroyView();
   }
+
+
 
   @Override
   public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -67,5 +71,13 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
   @Override
   public void onStopTrackingTouch(SeekBar seekBar) {
     // Do nothing. No need to handle this
+  }
+
+  private void setupActionBar () {
+    ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
+    //noinspection DataFlowIssue
+    actionBar.setDisplayHomeAsUpEnabled(true);
+    actionBar.setDisplayShowHomeEnabled(true);
+
   }
 }

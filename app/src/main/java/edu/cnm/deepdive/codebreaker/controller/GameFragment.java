@@ -65,7 +65,6 @@ public class GameFragment extends Fragment implements MenuProvider {
     requireActivity().addMenuProvider(this, getViewLifecycleOwner(), State.RESUMED);
     //  Connect to viewmodels
     setupViewModels();
-
   }
 
   @Override

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorLong;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
@@ -24,8 +23,10 @@ public class GameResultsAdapter extends Adapter<ViewHolder> {
   private final DateFormat dateFormatter;
   private final String durationFormat;
   private final List<GameResult> gameResults;
-  @ColorInt private final int evenRowBackground;
-  @ColorInt private final int oddRowBackground;
+  @ColorInt
+  private final int evenRowBackground;
+  @ColorInt
+  private final int oddRowBackground;
 
   public GameResultsAdapter(Context context, List<GameResult> gameResults) {
     this.gameResults = gameResults;
@@ -39,15 +40,14 @@ public class GameResultsAdapter extends Adapter<ViewHolder> {
   @NonNull
   @Override
   public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-
     return new Holder(
         ItemGameResultsBinding.inflate(inflater, viewGroup, false),
-        dateFormatter, durationFormat);
+        dateFormatter, durationFormat, evenRowBackground, oddRowBackground);
   }
 
   @Override
   public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-    ((Holder) holder).bind(gameResults.get(position));
+    ((Holder) holder).bind(position, gameResults.get(position));
   }
 
   @Override
@@ -63,18 +63,26 @@ public class GameResultsAdapter extends Adapter<ViewHolder> {
     private final ItemGameResultsBinding binding;
     private final DateFormat dateFormatter;
     private final String durationFormat;
+    @ColorInt
+    private final int evenRowBackground;
+    @ColorInt
+    private final int oddRowBackground;
 
-    Holder(ItemGameResultsBinding binding, DateFormat dateFormatter, String durationFormat) {
+    Holder(ItemGameResultsBinding binding, DateFormat dateFormatter, String durationFormat,
+        int evenRowBackground, int oddRowBackground) {
       super(binding.getRoot());
       this.binding = binding;
       this.dateFormatter = dateFormatter;
       this.durationFormat = durationFormat;
+      this.evenRowBackground = evenRowBackground;
+      this.oddRowBackground = oddRowBackground;
     }
 
-    public void bind(GameResult gameResult){
+    public void bind(int position, GameResult gameResult) {
+      binding.getRoot().setBackgroundColor((position % 2 == 0) ? evenRowBackground : oddRowBackground);
       binding.guessCount.setText(String.valueOf(gameResult.getGuessCount()));
       binding.timestamp.setText(
-          dateFormatter.format(new Date(gameResult.getTimestamp().toEpochMilli()) ));
+          dateFormatter.format(new Date(gameResult.getTimestamp().toEpochMilli())));
       Duration duration = gameResult.getDuration();
       long hours = duration.toHours();
       long minutes = duration.toMinutes() % MINUTES_PER_HOUR;

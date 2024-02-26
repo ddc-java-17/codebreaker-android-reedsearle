@@ -15,6 +15,7 @@
     android:layout_marginStart="@dimen/full_dynamic_spacing"
     android:layout_marginEnd="@dimen/half_dynamic_spacing"
     android:text="@string/code_length_label"
+    android:labelFor="@+id/code_length"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     />
@@ -49,19 +50,30 @@
     android:id="@+id/column_headers"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:padding="@dimen/half_dynamic_spacing"
+    android:paddingTop="@dimen/half_dynamic_spacing"
+    android:paddingHorizontal="@dimen/full_dynamic_spacing"
     android:layout_marginTop="@dimen/half_dynamic_spacing"
+    android:theme="@style/ScoreColumn.Header"
     android:orientation="horizontal"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@id/code_length_label">
 
     <TextView
+      android:id="@+id/rank_header"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_marginVertical="@dimen/half_static_spacing"
+      android:text="@string/rank_header"
+      />
+
+    <TextView
       android:id="@+id/guess_count_header"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_weight="3"
-      android:layout_margin="@dimen/half_static_spacing"
+      android:layout_weight="2"
+      android:layout_marginVertical="@dimen/half_static_spacing"
       android:text="@string/guess_count_header"
       />
 
@@ -70,7 +82,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="3"
-      android:layout_margin="@dimen/half_static_spacing"
+      android:layout_marginVertical="@dimen/half_static_spacing"
       android:text="@string/duration_header"
       />
 
@@ -79,7 +91,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="3"
-      android:layout_margin="@dimen/half_static_spacing"
+      android:layout_marginVertical="@dimen/half_static_spacing"
       android:text="@string/timestamp_header"
       />
 

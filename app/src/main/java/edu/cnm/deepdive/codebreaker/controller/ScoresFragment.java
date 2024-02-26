@@ -23,6 +23,13 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
 
   private FragmentScoresBinding binding;
   private GameResultViewModel viewModel;
+  private int initialCodeLength;
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    initialCodeLength = ScoresFragmentArgs.fromBundle(getArguments()).getCodeLength();
+  }
 
   @Override
   public View onCreateView(
@@ -45,7 +52,9 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
           GameResultsAdapter adapter = new GameResultsAdapter(requireContext(), gameResults);
           binding.gameResults.setAdapter(adapter);
         });
-    setupActionBar();
+    binding.codeLength.setProgress(binding.codeLength.getMin());
+    binding.codeLength.setProgress(binding.codeLength.getMax());
+    binding.codeLength.setProgress(initialCodeLength);
   }
 
   @Override
@@ -58,9 +67,7 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
 
   @Override
   public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-    if (fromUser) {
-      viewModel.setCodeLength(progress);
-    }
+    viewModel.setCodeLength(progress);
     binding.codeLengthValue.setText(String.valueOf(progress));
   }
 
@@ -74,11 +81,4 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
     // Do nothing. No need to handle this
   }
 
-  private void setupActionBar () {
-    ActionBar actionBar = ((AppCompatActivity) requireActivity()).getSupportActionBar();
-    //noinspection DataFlowIssue
-    actionBar.setDisplayHomeAsUpEnabled(true);
-    actionBar.setDisplayShowHomeEnabled(true);
-
-  }
 }

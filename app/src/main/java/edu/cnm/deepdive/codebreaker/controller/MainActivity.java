@@ -75,11 +75,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void setupActionBar () {
-    AppBarConfiguration config = new AppBarConfiguration.Builder(
-        R.id.game_fragment,
-        R.id.scores_fragment,
-        R.id.settings_fragment)
-        .build();
+    AppBarConfiguration config = new AppBarConfiguration.Builder(R.id.game_fragment).build();
     //noinspection DataFlowIssue
     NavController controller =
         ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))

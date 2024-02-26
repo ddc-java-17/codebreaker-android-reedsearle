@@ -3,6 +3,7 @@ package edu.cnm.deepdive.codebreaker.model.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import java.time.Duration;
@@ -10,17 +11,20 @@ import java.time.Instant;
 
 @Entity(
     tableName = "game_result",
-    indices = @Index(value = {"guess_count", "duration"})
+    indices = @Index(value = {"guess_count", "duration"}),
+    foreignKeys = {
+        @ForeignKey(
+            entity = User.class,
+            parentColumns = "user_id",
+            childColumns = "user_id",
+            onDelete = ForeignKey.CASCADE)
+}
 )
 public class GameResult {
 
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "game_result_id")
   private long id;
-
-  @ColumnInfo(index = true)
-  @NonNull
-  private Instant timestamp = Instant.now();
 
   @ColumnInfo(name = "code_length", index = true)
   private int codeLength;
@@ -32,6 +36,17 @@ public class GameResult {
   @NonNull
   private Duration duration = Duration.ZERO;
 
+  @ColumnInfo(name = "user_id", index = true)
+  private long user_id;
+
+  public long getUser_id() {
+    return user_id;
+  }
+
+  public void setUser_id(long user_id) {
+    this.user_id = user_id;
+  }
+
   public long getId() {
     return id;
   }
@@ -39,6 +54,10 @@ public class GameResult {
   public void setId(long id) {
     this.id = id;
   }
+
+  @ColumnInfo(index = true)
+  @NonNull
+  private Instant timestamp = Instant.now();
 
   @NonNull
   public Instant getTimestamp() {

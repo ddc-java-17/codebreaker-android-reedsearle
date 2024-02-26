@@ -8,12 +8,14 @@ import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import edu.cnm.deepdive.codebreaker.model.dao.GameResultDao;
+import edu.cnm.deepdive.codebreaker.model.dao.UserDao;
 import edu.cnm.deepdive.codebreaker.model.entity.GameResult;
+import edu.cnm.deepdive.codebreaker.model.entity.User;
 import edu.cnm.deepdive.codebreaker.service.CodebreakerDatabase.Converters;
 import java.time.Duration;
 import java.time.Instant;
 
-@Database(entities = {GameResult.class}, version = 1)
+@Database(entities = {User.class,  GameResult.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class CodebreakerDatabase extends RoomDatabase {
 
@@ -37,6 +39,7 @@ public abstract class CodebreakerDatabase extends RoomDatabase {
   }
 
   public abstract GameResultDao getGameResultDao();
+  public abstract UserDao getUserDao();
 
   public static class Converters {
 

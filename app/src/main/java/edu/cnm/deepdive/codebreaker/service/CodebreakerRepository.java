@@ -20,13 +20,16 @@ public class CodebreakerRepository {
   private static final String TAG = CodebreakerRepository.class.getSimpleName();
   private final CodebreakerServiceProxy proxy;
   private final GameResultRepository resultRepository;
+  private final UserRepository userRepository;
   private final Scheduler scheduler;
   private Game game;
 
   @Inject
-  CodebreakerRepository(CodebreakerServiceProxy proxy, GameResultRepository resultRepository) {
+  CodebreakerRepository(CodebreakerServiceProxy proxy, GameResultRepository resultRepository,
+      UserRepository userRepository) {
     this.proxy = proxy;
     this.resultRepository = resultRepository;
+    this.userRepository = userRepository;
     scheduler = Schedulers.single();
   }
   public Single<Game> startGame(Game game) {

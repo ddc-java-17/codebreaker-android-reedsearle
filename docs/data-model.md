@@ -14,7 +14,7 @@ erd:
 
 {% include ddc-abbreviations.md %}
 
-{% include unl.md %}
+{% include uml.md %}
 
 {% include erd.md %}
 

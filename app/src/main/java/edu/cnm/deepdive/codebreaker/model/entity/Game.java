@@ -65,6 +65,7 @@ public class Game {
   public Game() {
   }
 
+  @Ignore
   public Game(String pool, int length) throws BadCodeLengthException, BadPoolException {
     if (length <= 0) {
       throw new BadCodeLengthException();

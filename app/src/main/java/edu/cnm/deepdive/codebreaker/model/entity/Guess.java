@@ -16,13 +16,11 @@ import java.util.Date;
         @Index(value = "key", unique = true),
         @Index(value = {"game_id", "timestamp"})
     },
-    foreignKeys = {
-        @ForeignKey(
+    foreignKeys = @ForeignKey(
             entity = Game.class,
             parentColumns = "game_id",
             childColumns = "game_id",
-            onDelete = ForeignKey.CASCADE
-        )}
+            onDelete = ForeignKey.CASCADE)
 )
 public class Guess {
 

@@ -22,13 +22,11 @@ import kotlin.jvm.Transient;
 @Entity(
     tableName = "game",
     indices = @Index(value = "key", unique = true),
-    foreignKeys = {
-        @ForeignKey(
+    foreignKeys = @ForeignKey(
             entity = User.class,
             parentColumns = "user_id",
             childColumns = "user_id",
-            onDelete = ForeignKey.CASCADE
-        )}
+            onDelete = ForeignKey.CASCADE)
 )
 public class Game {
 

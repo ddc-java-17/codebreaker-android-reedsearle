@@ -2,6 +2,7 @@ package edu.cnm.deepdive.codebreaker.model.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
+import androidx.room.DatabaseView;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -9,20 +10,23 @@ import androidx.room.PrimaryKey;
 import java.time.Duration;
 import java.time.Instant;
 
-@Entity(
-    tableName = "game_result",
-    indices = @Index(value = {"guess_count", "duration"}),
-    foreignKeys = {
-        @ForeignKey(
-            entity = User.class,
-            parentColumns = "user_id",
-            childColumns = "user_id",
-            onDelete = ForeignKey.CASCADE)
-}
-)
+@DatabaseView(
+    viewName = "game_result",
+    value = "SELECT\n"
+        + "    gm.game_id AS game_result_id,\n"
+        + "    gm.user_id,\n"
+        + "    gm.length AS code_length,\n"
+        + "    COUNT(*) as guess_count,\n"
+        + "    MAX(gs.timestamp) - MIN(gs.timestamp) AS duration,\n"
+        + "    MAX(gs.timestamp) AS timestamp\n"
+        + " FROM\n"
+        + "   game AS gm\n"
+        + "   JOIN guess AS gs\n"
+        + "      ON gs.game_id = gm.game_id\n"
+        + "  GROUP BY\n"
+        + "    gm.game_id")
 public class GameResult {
 
-  @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "game_result_id")
   private long id;
 
@@ -39,6 +43,11 @@ public class GameResult {
   @ColumnInfo(name = "user_id", index = true)
   private long userId;
 
+  @ColumnInfo(index = true)
+  @NonNull
+  private Instant timestamp = Instant.now();
+
+
   public long getUserId() {
     return userId;
   }
@@ -54,10 +63,6 @@ public class GameResult {
   public void setId(long id) {
     this.id = id;
   }
-
-  @ColumnInfo(index = true)
-  @NonNull
-  private Instant timestamp = Instant.now();
 
   @NonNull
   public Instant getTimestamp() {

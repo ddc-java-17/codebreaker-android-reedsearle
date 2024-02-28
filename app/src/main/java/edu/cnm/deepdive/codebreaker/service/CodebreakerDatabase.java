@@ -20,7 +20,9 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 
-@Database(entities = {User.class,  GameResult.class, Game.class, Guess.class}, version = 1)
+@Database(entities = {User.class, Game.class, Guess.class},
+    views = GameResult.class,
+    version = 1)
 @TypeConverters({Converters.class})
 public abstract class CodebreakerDatabase extends RoomDatabase {
 

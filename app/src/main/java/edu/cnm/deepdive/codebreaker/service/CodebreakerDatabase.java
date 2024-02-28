@@ -9,13 +9,15 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import edu.cnm.deepdive.codebreaker.model.dao.GameResultDao;
 import edu.cnm.deepdive.codebreaker.model.dao.UserDao;
+import edu.cnm.deepdive.codebreaker.model.entity.Game;
 import edu.cnm.deepdive.codebreaker.model.entity.GameResult;
 import edu.cnm.deepdive.codebreaker.model.entity.User;
 import edu.cnm.deepdive.codebreaker.service.CodebreakerDatabase.Converters;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Date;
 
-@Database(entities = {User.class,  GameResult.class}, version = 1)
+@Database(entities = {User.class,  GameResult.class, Game.class}, version = 1)
 @TypeConverters({Converters.class})
 public abstract class CodebreakerDatabase extends RoomDatabase {
 
@@ -72,6 +74,22 @@ public abstract class CodebreakerDatabase extends RoomDatabase {
     public static Duration toDuration(@Nullable Long value) {
       return (value != null)
           ? Duration.ofMillis(value)
+          : null;
+    }
+
+    @TypeConverter
+    @Nullable
+    public static Long toLong(@Nullable Date value) {
+      return (value != null)
+          ? value.getTime()
+          : null;
+    }
+
+    @TypeConverter
+    @Nullable
+    public static Date toDate(@Nullable Long value) {
+      return (value != null)
+          ? new Date(value)
           : null;
     }
   }

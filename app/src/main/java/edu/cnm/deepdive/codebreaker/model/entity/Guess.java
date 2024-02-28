@@ -1,4 +1,4 @@
-package edu.cnm.deepdive.codebreaker.model;
+package edu.cnm.deepdive.codebreaker.model.entity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

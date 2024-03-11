@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import edu.cnm.deepdive.codebreaker.R;
 import edu.cnm.deepdive.codebreaker.adapter.GameResultsAdapter;
 import edu.cnm.deepdive.codebreaker.databinding.FragmentScoresBinding;
+import edu.cnm.deepdive.codebreaker.viewmodel.CodebreakerViewModel;
 import edu.cnm.deepdive.codebreaker.viewmodel.GameResultViewModel;
 import edu.cnm.deepdive.codebreaker.viewmodel.PreferencesViewModel;
 
@@ -59,10 +60,10 @@ public class ScoresFragment extends Fragment implements OnSeekBarChangeListener 
     binding.codeLength.setProgress(binding.codeLength.getMax());
     binding.codeLength.setProgress(binding.codeLength.getMin());
 //    binding.codeLength.setProgress(initialCodeLength);// for use with original navigation
-    PreferencesViewModel prefsViewModel = provider.get(PreferencesViewModel.class);
-    prefsViewModel
-        .getPreferedCodeLength()
-        .observe(owner, binding.codeLength::setProgress);
+    CodebreakerViewModel codebreakerViewModel = provider.get(CodebreakerViewModel.class);
+    codebreakerViewModel
+        .getGame()
+        .observe(owner, (game)-> binding.codeLength.setProgress(game.getLength()));
   }
 
   @Override

@@ -24,9 +24,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:menu="@menu/navigate"
-    app:itemIconTint="@drawable/navigation_item"
-    app:itemTextColor="@drawable/navigation_item"
-    app:itemBackground="@drawable/navigation_item_background"
+    style="@style/BottomNavigator"
     app:layout_constraintBottom_toBottomOf="parent"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,32 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <group>
-    <item
-      android:id="@+id/game_fragment"
-      android:title="@string/game_menu_label"
-      />
-    <!--  TODO Add icon-->
-
-    <item
-      android:id="@+id/scores_fragment"
-      android:title="@string/scores_fragment_label"
-      android:icon="@drawable/ranked_list"
-      />
-
-    <item
-      android:id="@+id/ranks_fragment"
-      android:title="@string/ranks_fragment_label"
-      android:icon="@drawable/ranked_list"
-      />
-  </group>
-
-  <item
-    android:id="@+id/settings"
-    android:title="@string/settings"
-    android:icon="@drawable/settings"
-    />
-
   <item
     android:id="@+id/sign_out"
     android:title="@string/sign_out"

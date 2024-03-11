@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -35,12 +38,13 @@ public class MainActivity extends AppCompatActivity {
     getLifecycle().addObserver(loginViewModel);
     loginViewModel
         .getAccount()
-            .observe(this, this::handleAccount);
+        .observe(this, this::handleAccount);
     loginViewModel
         .getThrowable()
-            .observe(this, this::handleThrowable);
+        .observe(this, this::handleThrowable);
     setContentView(binding.getRoot());
     setupNavigation();
+    setupDrawer();
   }
 
   @Override
@@ -61,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     boolean handled = true;
     if (item.getItemId() == R.id.sign_out) {
       loginViewModel.signOut();
-    } else if (item.getItemId() ==  R.id.settings){
+    } else if (item.getItemId() == R.id.settings) {
       navController.navigate(MainNavigationMapDirections.navigateToSettings());
     } else {
       handled = super.onOptionsItemSelected(item);
@@ -85,9 +89,19 @@ public class MainActivity extends AppCompatActivity {
         R.id.game_fragment, R.id.scores_fragment, R.id.ranks_fragment)
         .build();
     //noinspection DataFlowIssue
-    navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment))
+    navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(
+        R.id.nav_host_fragment))
         .getNavController();
+    setSupportActionBar(binding.appBarLayout.toolbar);
     NavigationUI.setupActionBarWithNavController(this, navController, config);
     NavigationUI.setupWithNavController(binding.navigator, navController);
+  }
+
+  private void setupDrawer() {
+    DrawerLayout drawer = binding.getRoot();
+    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        this, drawer, binding.appBarLayout.toolbar, R.string.nav_open, R.string.nav_close);
+    drawer.addDrawerListener(toggle);
+    toggle.syncState();
   }
 }

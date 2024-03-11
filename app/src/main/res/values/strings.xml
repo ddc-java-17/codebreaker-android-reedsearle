@@ -1,7 +1,10 @@
 <resources>
-  <!-- TODO: Remove or change this placeholder text -->
+
   <string name="login_failure_message">Unable to sign in with the provided credentials</string>
   <string name="sign_out">Sign out</string>
+
+  <string name="nav_open">Open navigation drawer</string>
+  <string name="nav_close">Close navigation drawer</string>
 
   <string name="guess_header">Guess</string>
   <string name="correct_header">Correct</string>

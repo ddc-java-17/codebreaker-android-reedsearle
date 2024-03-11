@@ -3,9 +3,6 @@
   <string name="login_failure_message">Unable to sign in with the provided credentials</string>
   <string name="sign_out">Sign out</string>
 
-  <string name="nav_open">Open navigation drawer</string>
-  <string name="nav_close">Close navigation drawer</string>
-
   <string name="guess_header">Guess</string>
   <string name="correct_header">Correct</string>
   <string name="close_header">Close</string>
@@ -38,4 +35,7 @@
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="ranks_fragment_label">User Ranks</string>
   <string name="game_menu_label">Play</string>
+
+  <string name="nav_open">Open navigation drawer</string>
+  <string name="nav_close">Close navigation drawer</string>
 </resources>

@@ -3,12 +3,15 @@ package edu.cnm.deepdive.codebreaker.controller;
 import android.content.ClipData.Item;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -54,23 +57,13 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    super.onCreateOptionsMenu(menu);
-    getMenuInflater().inflate(R.menu.main_options, menu);
-    return true;
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-    boolean handled = true;
-    if (item.getItemId() == R.id.sign_out) {
-      loginViewModel.signOut();
-    } else if (item.getItemId() == R.id.settings) {
-      navController.navigate(MainNavigationMapDirections.navigateToSettings());
-    } else {
-      handled = super.onOptionsItemSelected(item);
+  public void onBackPressed() {
+    DrawerLayout drawer = binding.getRoot();
+    if (drawer.isDrawerOpen(GravityCompat.START)){
+      drawer.closeDrawer(GravityCompat.START);
+    }else{
+      super.onBackPressed();
     }
-    return handled;
   }
 
   private void handleAccount(GoogleSignInAccount account) {
@@ -87,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
   private void setupNavigation() {
     AppBarConfiguration config = new AppBarConfiguration.Builder(
         R.id.game_fragment, R.id.scores_fragment, R.id.ranks_fragment)
+        .setFallbackOnNavigateUpListener(this::onSupportNavigateUp)
         .build();
     //noinspection DataFlowIssue
     navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(
@@ -94,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         .getNavController();
     setSupportActionBar(binding.appBarLayout.toolbar);
     NavigationUI.setupActionBarWithNavController(this, navController, config);
-    NavigationUI.setupWithNavController(binding.navigator, navController);
+    NavigationUI.setupWithNavController(binding.appBarLayout.toolbar, navController, config);
   }
 
   private void setupDrawer() {

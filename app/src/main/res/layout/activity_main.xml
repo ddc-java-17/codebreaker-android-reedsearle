@@ -23,5 +23,10 @@
     android:id="@+id/navigator"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintBottom_toBottomOf="parent"/>
+    app:menu="@menu/navigate"
+    app:itemIconTint="@drawable/navigation_item"
+    app:itemTextColor="@drawable/navigation_item"
+    app:itemBackground="@drawable/navigation_item_background"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

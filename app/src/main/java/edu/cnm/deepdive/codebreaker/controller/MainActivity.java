@@ -1,27 +1,21 @@
 package edu.cnm.deepdive.codebreaker.controller;
 
-import android.content.ClipData.Item;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.GridLayout;
-import androidx.annotation.NonNull;
+import android.view.View;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.material.navigation.NavigationView;
 import dagger.hilt.android.AndroidEntryPoint;
-import edu.cnm.deepdive.codebreaker.MainNavigationMapDirections;
 import edu.cnm.deepdive.codebreaker.R;
 import edu.cnm.deepdive.codebreaker.databinding.ActivityMainBinding;
 import edu.cnm.deepdive.codebreaker.viewmodel.LoginViewModel;
@@ -32,38 +26,33 @@ public class MainActivity extends AppCompatActivity {
   private ActivityMainBinding binding;
   private LoginViewModel loginViewModel;
   private NavController navController;
+  private AppBarConfiguration appBarConfig;
+  private DrawerLayout drawer;
+  private OnBackCallback onBackPressedCallback;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     binding = ActivityMainBinding.inflate(getLayoutInflater());
-    loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-    getLifecycle().addObserver(loginViewModel);
+    loginViewModel = new ViewModelProvider(this)
+        .get(LoginViewModel.class);
+    getLifecycle()
+        .addObserver(loginViewModel);
     loginViewModel
         .getAccount()
         .observe(this, this::handleAccount);
     loginViewModel
         .getThrowable()
         .observe(this, this::handleThrowable);
-    setContentView(binding.getRoot());
+    drawer = binding.getRoot();
+    setContentView(drawer);
     setupNavigation();
-    setupDrawer();
   }
 
   @Override
   public boolean onSupportNavigateUp() {
-    getOnBackPressedDispatcher().onBackPressed();
-    return true;
-  }
-
-  @Override
-  public void onBackPressed() {
-    DrawerLayout drawer = binding.getRoot();
-    if (drawer.isDrawerOpen(GravityCompat.START)){
-      drawer.closeDrawer(GravityCompat.START);
-    }else{
-      super.onBackPressed();
-    }
+    return NavigationUI.navigateUp(navController, binding.getRoot())
+        || super.onSupportNavigateUp();
   }
 
   private void handleAccount(GoogleSignInAccount account) {
@@ -78,24 +67,50 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void setupNavigation() {
-    AppBarConfiguration config = new AppBarConfiguration.Builder(
-        R.id.game_fragment, R.id.scores_fragment, R.id.ranks_fragment)
-        .setFallbackOnNavigateUpListener(this::onSupportNavigateUp)
-        .build();
     //noinspection DataFlowIssue
-    navController = ((NavHostFragment) getSupportFragmentManager().findFragmentById(
-        R.id.nav_host_fragment))
+    navController = ((NavHostFragment) getSupportFragmentManager()
+        .findFragmentById(R.id.nav_host_fragment))
         .getNavController();
-    setSupportActionBar(binding.appBarLayout.toolbar);
-    NavigationUI.setupActionBarWithNavController(this, navController, config);
-    NavigationUI.setupWithNavController(binding.appBarLayout.toolbar, navController, config);
+    appBarConfig = new AppBarConfiguration.Builder(
+        R.id.game_fragment, R.id.scores_fragment, R.id.ranks_fragment, R.id.settings_fragment)
+        .setOpenableLayout(drawer)
+        .build();
+    NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);
+    NavigationUI.setupWithNavController(binding.navigator, navController);
+    binding.navigator
+        .getMenu()
+        .findItem(R.id.sign_out)
+        .setOnMenuItemClickListener((item) -> {
+          loginViewModel.signOut();
+          return true;
+        });
+    onBackPressedCallback = new OnBackCallback(drawer.isDrawerOpen(GravityCompat.START));
+    getOnBackPressedDispatcher().addCallback(onBackPressedCallback);
+    drawer.addDrawerListener(new DrawerListener());
+  }
+  private class OnBackCallback extends OnBackPressedCallback {
+
+    public OnBackCallback(boolean enabled) {
+      super(enabled);
+    }
+
+    @Override
+    public void handleOnBackPressed() {
+      drawer.closeDrawer(GravityCompat.START);
+    }
   }
 
-  private void setupDrawer() {
-    DrawerLayout drawer = binding.getRoot();
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-        this, drawer, binding.appBarLayout.toolbar, R.string.nav_open, R.string.nav_close);
-    drawer.addDrawerListener(toggle);
-    toggle.syncState();
+  private class DrawerListener extends SimpleDrawerListener {
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+      onBackPressedCallback.setEnabled(true);
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+      onBackPressedCallback.setEnabled(false);
+    }
   }
+
 }

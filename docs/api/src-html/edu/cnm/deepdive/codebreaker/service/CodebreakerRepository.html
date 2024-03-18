@@ -34,72 +34,79 @@
 <span class="source-line-no">021</span><span id="line-21">  private final CodebreakerServiceProxy proxy;</span>
 <span class="source-line-no">022</span><span id="line-22">  private final GameResultRepository resultRepository;</span>
 <span class="source-line-no">023</span><span id="line-23">  private final UserRepository userRepository;</span>
-<span class="source-line-no">024</span><span id="line-24">  private final Scheduler scheduler;</span>
-<span class="source-line-no">025</span><span id="line-25">  private Game game;</span>
-<span class="source-line-no">026</span><span id="line-26"></span>
-<span class="source-line-no">027</span><span id="line-27">  @Inject</span>
-<span class="source-line-no">028</span><span id="line-28">  CodebreakerRepository(CodebreakerServiceProxy proxy, GameResultRepository resultRepository,</span>
-<span class="source-line-no">029</span><span id="line-29">      UserRepository userRepository) {</span>
-<span class="source-line-no">030</span><span id="line-30">    this.proxy = proxy;</span>
-<span class="source-line-no">031</span><span id="line-31">    this.resultRepository = resultRepository;</span>
-<span class="source-line-no">032</span><span id="line-32">    this.userRepository = userRepository;</span>
-<span class="source-line-no">033</span><span id="line-33">    scheduler = Schedulers.single();</span>
-<span class="source-line-no">034</span><span id="line-34">  }</span>
-<span class="source-line-no">035</span><span id="line-35">  public Single&lt;Game&gt; startGame(Game game) {</span>
-<span class="source-line-no">036</span><span id="line-36">    return proxy</span>
-<span class="source-line-no">037</span><span id="line-37">        .startGame(game)</span>
-<span class="source-line-no">038</span><span id="line-38">        .doOnSuccess(this::setGame)</span>
-<span class="source-line-no">039</span><span id="line-39">        .subscribeOn(scheduler);</span>
-<span class="source-line-no">040</span><span id="line-40">  }</span>
-<span class="source-line-no">041</span><span id="line-41"></span>
-<span class="source-line-no">042</span><span id="line-42">  @SuppressLint("CheckResult")</span>
-<span class="source-line-no">043</span><span id="line-43">  public Single&lt;Guess&gt; submitGuess(String text) {</span>
-<span class="source-line-no">044</span><span id="line-44">    return Single.fromSupplier(() -&gt; game.validate(text))</span>
-<span class="source-line-no">045</span><span id="line-45">        .flatMap((guess) -&gt; proxy.submitGuess(game.getId(), guess))</span>
-<span class="source-line-no">046</span><span id="line-46">        .flatMap((guess) -&gt; {</span>
-<span class="source-line-no">047</span><span id="line-47">          game.getGuesses().add(guess);</span>
-<span class="source-line-no">048</span><span id="line-48">          return game.isSolved()</span>
-<span class="source-line-no">049</span><span id="line-49">              ? userRepository</span>
-<span class="source-line-no">050</span><span id="line-50">                .getCurrentUser()</span>
-<span class="source-line-no">051</span><span id="line-51">                .map((user)-&gt; toResult(game, user))</span>
-<span class="source-line-no">052</span><span id="line-52">                .flatMap(resultRepository::add)</span>
-<span class="source-line-no">053</span><span id="line-53">                .map((result)-&gt;guess)</span>
-<span class="source-line-no">054</span><span id="line-54">              : Single.just(guess);</span>
-<span class="source-line-no">055</span><span id="line-55">        })</span>
-<span class="source-line-no">056</span><span id="line-56">        .subscribeOn(scheduler);</span>
-<span class="source-line-no">057</span><span id="line-57">  }</span>
-<span class="source-line-no">058</span><span id="line-58"></span>
-<span class="source-line-no">059</span><span id="line-59">  public Single&lt;Game&gt; getGame(String id) {</span>
-<span class="source-line-no">060</span><span id="line-60">    return proxy</span>
-<span class="source-line-no">061</span><span id="line-61">        .getGame(id)</span>
-<span class="source-line-no">062</span><span id="line-62">        .doOnSuccess(this::setGame)</span>
-<span class="source-line-no">063</span><span id="line-63">        .subscribeOn(scheduler);</span>
-<span class="source-line-no">064</span><span id="line-64">  }</span>
-<span class="source-line-no">065</span><span id="line-65"></span>
-<span class="source-line-no">066</span><span id="line-66">  public Game getGame() {</span>
-<span class="source-line-no">067</span><span id="line-67">    return game;</span>
-<span class="source-line-no">068</span><span id="line-68">  }</span>
-<span class="source-line-no">069</span><span id="line-69"></span>
-<span class="source-line-no">070</span><span id="line-70">  private void setGame(Game game) {</span>
-<span class="source-line-no">071</span><span id="line-71">    this.game = game;</span>
-<span class="source-line-no">072</span><span id="line-72">  }</span>
-<span class="source-line-no">073</span><span id="line-73"></span>
-<span class="source-line-no">074</span><span id="line-74">  private GameResult toResult(Game game, User user){</span>
-<span class="source-line-no">075</span><span id="line-75">    GameResult result = new GameResult();</span>
-<span class="source-line-no">076</span><span id="line-76">    result.setUserId(user.getId());</span>
-<span class="source-line-no">077</span><span id="line-77">    result.setCodeLength(game.getLength());</span>
-<span class="source-line-no">078</span><span id="line-78">    List&lt;Guess&gt; guesses = game.getGuesses();</span>
-<span class="source-line-no">079</span><span id="line-79">    int size = guesses.size();</span>
-<span class="source-line-no">080</span><span id="line-80">    result.setGuessCount(size);</span>
-<span class="source-line-no">081</span><span id="line-81">    Date lastTimestamp = guesses.get(size - 1).getTimestamp();</span>
-<span class="source-line-no">082</span><span id="line-82">    result.setTimestamp(lastTimestamp.toInstant());</span>
-<span class="source-line-no">083</span><span id="line-83">    result.setDuration(</span>
-<span class="source-line-no">084</span><span id="line-84">        Duration.ofMillis(lastTimestamp.getTime() -</span>
-<span class="source-line-no">085</span><span id="line-85">        guesses.get(0).getTimestamp().getTime()</span>
-<span class="source-line-no">086</span><span id="line-86">        ));</span>
-<span class="source-line-no">087</span><span id="line-87">    return result;</span>
-<span class="source-line-no">088</span><span id="line-88">  }</span>
-<span class="source-line-no">089</span><span id="line-89">}</span>
+<span class="source-line-no">024</span><span id="line-24">  private final GoogleSignInService signInService;</span>
+<span class="source-line-no">025</span><span id="line-25">  private final Scheduler scheduler;</span>
+<span class="source-line-no">026</span><span id="line-26">  private Game game;</span>
+<span class="source-line-no">027</span><span id="line-27"></span>
+<span class="source-line-no">028</span><span id="line-28">  @Inject</span>
+<span class="source-line-no">029</span><span id="line-29">  CodebreakerRepository(CodebreakerServiceProxy proxy, GameResultRepository resultRepository,</span>
+<span class="source-line-no">030</span><span id="line-30">      UserRepository userRepository, GoogleSignInService signInService) {</span>
+<span class="source-line-no">031</span><span id="line-31">    this.proxy = proxy;</span>
+<span class="source-line-no">032</span><span id="line-32">    this.resultRepository = resultRepository;</span>
+<span class="source-line-no">033</span><span id="line-33">    this.userRepository = userRepository;</span>
+<span class="source-line-no">034</span><span id="line-34">    this.signInService = signInService;</span>
+<span class="source-line-no">035</span><span id="line-35">    scheduler = Schedulers.single();</span>
+<span class="source-line-no">036</span><span id="line-36">  }</span>
+<span class="source-line-no">037</span><span id="line-37"></span>
+<span class="source-line-no">038</span><span id="line-38">  public Single&lt;Game&gt; startGame(Game game) {</span>
+<span class="source-line-no">039</span><span id="line-39">    return signInService</span>
+<span class="source-line-no">040</span><span id="line-40">        .refreshBearerToken()</span>
+<span class="source-line-no">041</span><span id="line-41">        .observeOn(scheduler)</span>
+<span class="source-line-no">042</span><span id="line-42">        .flatMap((token) -&gt; proxy.startGame(game, token))</span>
+<span class="source-line-no">043</span><span id="line-43">        .doOnSuccess(this::setGame);</span>
+<span class="source-line-no">044</span><span id="line-44">  }</span>
+<span class="source-line-no">045</span><span id="line-45"></span>
+<span class="source-line-no">046</span><span id="line-46">  @SuppressLint("CheckResult")</span>
+<span class="source-line-no">047</span><span id="line-47">  public Single&lt;Guess&gt; submitGuess(String text) {</span>
+<span class="source-line-no">048</span><span id="line-48">    return signInService</span>
+<span class="source-line-no">049</span><span id="line-49">        .refreshBearerToken()</span>
+<span class="source-line-no">050</span><span id="line-50">        .observeOn(scheduler)</span>
+<span class="source-line-no">051</span><span id="line-51">        .flatMap((token) -&gt; proxy.submitGuess(game.getId(), game.validate(text), token))</span>
+<span class="source-line-no">052</span><span id="line-52">        .flatMap((guess) -&gt; {</span>
+<span class="source-line-no">053</span><span id="line-53">          game.getGuesses().add(guess);</span>
+<span class="source-line-no">054</span><span id="line-54">          return game.isSolved()</span>
+<span class="source-line-no">055</span><span id="line-55">              ? userRepository</span>
+<span class="source-line-no">056</span><span id="line-56">              .getCurrentUser()</span>
+<span class="source-line-no">057</span><span id="line-57">              .map((user) -&gt; toResult(game, user))</span>
+<span class="source-line-no">058</span><span id="line-58">              .flatMap(resultRepository::add)</span>
+<span class="source-line-no">059</span><span id="line-59">              .map((result) -&gt; guess)</span>
+<span class="source-line-no">060</span><span id="line-60">              : Single.just(guess);</span>
+<span class="source-line-no">061</span><span id="line-61">        })</span>
+<span class="source-line-no">062</span><span id="line-62">        .subscribeOn(scheduler);</span>
+<span class="source-line-no">063</span><span id="line-63">  }</span>
+<span class="source-line-no">064</span><span id="line-64"></span>
+<span class="source-line-no">065</span><span id="line-65">  public Single&lt;Game&gt; getGame(String id) {</span>
+<span class="source-line-no">066</span><span id="line-66">    return signInService</span>
+<span class="source-line-no">067</span><span id="line-67">        .refreshBearerToken()</span>
+<span class="source-line-no">068</span><span id="line-68">        .observeOn(scheduler)</span>
+<span class="source-line-no">069</span><span id="line-69">        .flatMap((token)-&gt; proxy.getGame(id, token))</span>
+<span class="source-line-no">070</span><span id="line-70">        .doOnSuccess(this::setGame);</span>
+<span class="source-line-no">071</span><span id="line-71">  }</span>
+<span class="source-line-no">072</span><span id="line-72"></span>
+<span class="source-line-no">073</span><span id="line-73">  public Game getGame() {</span>
+<span class="source-line-no">074</span><span id="line-74">    return game;</span>
+<span class="source-line-no">075</span><span id="line-75">  }</span>
+<span class="source-line-no">076</span><span id="line-76"></span>
+<span class="source-line-no">077</span><span id="line-77">  private void setGame(Game game) {</span>
+<span class="source-line-no">078</span><span id="line-78">    this.game = game;</span>
+<span class="source-line-no">079</span><span id="line-79">  }</span>
+<span class="source-line-no">080</span><span id="line-80"></span>
+<span class="source-line-no">081</span><span id="line-81">  private GameResult toResult(Game game, User user) {</span>
+<span class="source-line-no">082</span><span id="line-82">    GameResult result = new GameResult();</span>
+<span class="source-line-no">083</span><span id="line-83">    result.setUserId(user.getId());</span>
+<span class="source-line-no">084</span><span id="line-84">    result.setCodeLength(game.getLength());</span>
+<span class="source-line-no">085</span><span id="line-85">    List&lt;Guess&gt; guesses = game.getGuesses();</span>
+<span class="source-line-no">086</span><span id="line-86">    int size = guesses.size();</span>
+<span class="source-line-no">087</span><span id="line-87">    result.setGuessCount(size);</span>
+<span class="source-line-no">088</span><span id="line-88">    Date lastTimestamp = guesses.get(size - 1).getTimestamp();</span>
+<span class="source-line-no">089</span><span id="line-89">    result.setTimestamp(lastTimestamp.toInstant());</span>
+<span class="source-line-no">090</span><span id="line-90">    result.setDuration(</span>
+<span class="source-line-no">091</span><span id="line-91">        Duration.ofMillis(lastTimestamp.getTime() -</span>
+<span class="source-line-no">092</span><span id="line-92">            guesses.get(0).getTimestamp().getTime()</span>
+<span class="source-line-no">093</span><span id="line-93">        ));</span>
+<span class="source-line-no">094</span><span id="line-94">    return result;</span>
+<span class="source-line-no">095</span><span id="line-95">  }</span>
+<span class="source-line-no">096</span><span id="line-96">}</span>
 
 
 

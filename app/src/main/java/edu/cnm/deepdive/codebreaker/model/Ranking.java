@@ -2,11 +2,12 @@ package edu.cnm.deepdive.codebreaker.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import edu.cnm.deepdive.codebreaker.model.entity.User;
 
 public class Ranking {
 
   @Expose
-  private final String userId = null;
+  private final User user = null;
   @Expose
   private final int poolSize = 0;
   @Expose
@@ -17,10 +18,10 @@ public class Ranking {
   @Expose
   private final double avgGuessCount = 0;
   @Expose
-  private final double avgDduration = 0;
+  private final double avgDuration = 0;
 
-  public String getUserId() {
-    return userId;
+  public User getUser() {
+    return user;
   }
 
   public int getPoolSize() {
@@ -39,7 +40,7 @@ public class Ranking {
     return avgGuessCount;
   }
 
-  public double getAvgDduration() {
-    return avgDduration;
+  public double getAvgDuration() {
+    return avgDuration;
   }
 }

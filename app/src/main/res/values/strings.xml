@@ -42,4 +42,5 @@
   <string name="games_threshold_key">games_threshold</string>
   <string name="games_threshold_title">Games Threshold</string>
   <string name="games_threshold_summary">Minimum number of games a user must play at specified code length to be included in rankings</string>
+  <string name="games_threshold_label">Games Threshold</string>
 </resources>

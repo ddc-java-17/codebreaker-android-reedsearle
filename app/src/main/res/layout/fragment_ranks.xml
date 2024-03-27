@@ -35,6 +35,7 @@
     android:layout_height="wrap_content"
     android:max="@integer/code_length_max"
     android:min="@integer/code_length_min"
+    android:progress="@integer/code_length_default"
     android:layout_margin="@dimen/half_dynamic_spacing"
     app:layout_constraintStart_toEndOf="@id/label_ending_edge"
     app:layout_constraintTop_toTopOf="@id/code_length_label"
@@ -73,8 +74,9 @@
     android:id="@+id/games_threshold"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:max="@integer/code_length_max"
-    android:min="@integer/code_length_min"
+    android:max="@integer/games_threshold_max"
+    android:min="@integer/games_threshold_min"
+    android:progress="@integer/games_threshold_default"
     android:layout_margin="@dimen/half_dynamic_spacing"
     app:layout_constraintStart_toEndOf="@id/label_ending_edge"
     app:layout_constraintTop_toTopOf="@id/games_threshold_label"
@@ -103,7 +105,7 @@
     android:layout_marginTop="@dimen/half_dynamic_spacing"
     android:paddingHorizontal="@dimen/half_dynamic_spacing"
     android:paddingTop="@dimen/half_static_spacing"
-    android:gravity="start|center_vertical"
+    android:paddingBottom="0dp"
     android:theme="@style/AppTheme.RankingList.Header"
     app:layout_constraintTop_toBottomOf="@id/games_threshold">
 
@@ -122,7 +124,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/half_static_spacing"
-      android:layout_weight="11"
+      android:layout_weight="9"
       android:text="@string/display_name_header_label"
       />
 
@@ -131,7 +133,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/half_static_spacing"
-      android:layout_weight="6"
+      android:layout_weight="5"
       style="@style/NumberAlignment"
       android:text="@string/avg_count_header_label"
       />

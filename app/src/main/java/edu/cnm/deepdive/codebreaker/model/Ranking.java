@@ -7,18 +7,29 @@ import edu.cnm.deepdive.codebreaker.model.entity.User;
 public class Ranking {
 
   @Expose
-  private final User user = null;
+  private final User user;
+
   @Expose
-  private final int poolSize = 0;
+  private final int poolSize;
   @Expose
   @SerializedName("length")
-  private final int codeLength = 0;
+  private final int codeLength;
   @Expose
-  private final double gameCount = 0;
+  private final double gameCount;
   @Expose
-  private final double avgGuessCount = 0;
+  private final double avgGuessCount;
   @Expose
-  private final double avgDuration = 0;
+  private final double avgDuration;
+
+  public Ranking(User user, int poolSize, int codeLength, double gameCount, double avgGuessCount,
+      double avgDuration) {
+    this.user = user;
+    this.poolSize = poolSize;
+    this.codeLength = codeLength;
+    this.gameCount = gameCount;
+    this.avgGuessCount = avgGuessCount;
+    this.avgDuration = avgDuration;
+  }
 
   public User getUser() {
     return user;

@@ -44,7 +44,8 @@
   <string name="games_threshold_summary">Minimum number of games a user must play at specified code length to be included in rankings</string>
   <string name="games_threshold_label">Games Threshold</string>
   <string name="rank_header_label">#</string>
-  <string name="display_name_header_label">Player Name</string>
-  <string name="avg_count_header_label">Avg Guesses</string>
+  <string name="display_name_header_label">Name</string>
+  <string name="avg_count_header_label">Guesses</string>
   <string name="duration_header_label">Duration</string>
+  <string name="guess_count_format">%.2f</string>
 </resources>

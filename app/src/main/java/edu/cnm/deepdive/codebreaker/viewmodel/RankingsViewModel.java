@@ -29,8 +29,6 @@ public class RankingsViewModel extends ViewModel implements DefaultLifecycleObse
     rankings = new MutableLiveData<>();
     throwable = new MutableLiveData<>();
     pending = new CompositeDisposable();
-    // FIXME: 3/18/2024 Remove line below
-    fetch(3, 7);
   }
 
   public LiveData<List<Ranking>> getRankings() {
@@ -47,9 +45,7 @@ public class RankingsViewModel extends ViewModel implements DefaultLifecycleObse
     repository
         .getRankings(codeLength, gamesThreshold)
         .subscribe(
-            value -> {
-              rankings.postValue(value);
-            },
+            rankings::postValue,
             this::postThrowable,
             pending
         );

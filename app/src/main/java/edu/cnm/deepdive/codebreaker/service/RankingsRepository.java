@@ -37,5 +37,4 @@ public class RankingsRepository {
         .flatMap((token)-> serviceProxy.getRankings(poolSize, codeLength, gamesThreshold, token));
   }
 
-
 }

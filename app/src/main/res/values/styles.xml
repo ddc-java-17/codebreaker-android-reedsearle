@@ -56,6 +56,22 @@
     <item name="android:background">?android:attr/colorBackground</item>
     <item name="itemIconTint">@color/navigation_item_foreground</item>
     <item name="itemTextColor">@color/navigation_item_foreground</item>
-
   </style>
+
+  <style name="AppTheme.RankingList" parent="TextAppearance.Material3.BodyMedium">
+    <item name="android:textAlignment">textStart</item>
+  </style>
+
+  <style name="AppTheme.RankingList.Header">
+    <item name="android:textFontWeight">900</item>
+  </style>
+
+  <style name="NumberAlignment">
+    <item name="android:textAlignment">textEnd</item>
+  </style>
+
+  <style name="RankAlignment">
+    <item name="android:textAlignment">center</item>
+  </style>
+
 </resources>

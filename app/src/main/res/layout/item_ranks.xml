@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:orientation="horizontal"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="@dimen/half_static_spacing"
+  android:gravity="start|center_vertical">
+
+  <TextView
+    android:id="@+id/rank"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/half_static_spacing"
+    android:layout_weight="2"
+    tools:text="800"
+    />
+
+  <TextView
+    android:id="@+id/display_name"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/half_static_spacing"
+    android:layout_weight="10"
+    tools:text="Some Player"
+    />
+
+  <TextView
+    android:id="@+id/avg_guess_count"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/half_static_spacing"
+    android:layout_weight="5"
+    tools:text="5.123"
+    />
+
+  <TextView
+    android:id="@+id/avg_duration"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/half_static_spacing"
+    android:layout_weight="7"
+    tools:text="12:34.567"
+    />
+
+</LinearLayout>
